@@ -3,27 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quantum Edge Architecture | Live Render v2.0</title>
+    <title>Quantum Edge Architecture | Production Matrix</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background-color: #030307; color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, sans-serif; overflow-x: hidden; }
-        #three-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; }
-        header { position: fixed; top: 0; left: 0; width: 100%; padding: 25px 8%; display: flex; justify-content: space-between; align-items: center; background: rgba(3, 3, 7, 0.7); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); z-index: 100; }
+        :root {
+            --bg-dark: #030307;
+            --accent-cyan: #00ffcc;
+            --accent-purple: #7000ff;
+            --text-main: #ffffff;
+            --text-muted: #8f8fa3;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* 3D Depth Space Matrix Container (Bypasses WebGL hardware requirements) */
+        .space-matrix-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+            pointer-events: none;
+            perspective: 800px; /* Establishes a true spatial viewing focal depth */
+            overflow: hidden;
+        }
+
+        /* Pure CSS-driven 3D Vector Layer Rings */
+        .matrix-ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 800px;
+            height: 800px;
+            margin-left: -400px;
+            margin-top: -400px;
+            border: 2px dashed rgba(0, 255, 204, 0.15);
+            border-radius: 50%;
+            transform-style: preserve-3d;
+            transition: transform 0.1s ease-out; /* Buttery smooth movement caching */
+        }
+
+        /* Generates nested rings inside the spatial focal path */
+        .ring-1 { transform: translateZ(-200px) rotateX(60deg); }
+        .ring-2 { transform: translateZ(-400px) rotateX(60deg); border-color: rgba(112, 0, 255, 0.15); }
+        .ring-3 { transform: translateZ(-600px) rotateX(60deg); }
+        .ring-4 { transform: translateZ(-800px) rotateX(60deg); border-color: rgba(112, 0, 255, 0.15); }
+
+        /* Navigation Framework */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 25px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(3, 3, 7, 0.8);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            z-index: 100;
+        }
+
         .logo { font-size: 1.5rem; font-weight: 800; letter-spacing: -1px; }
-        .logo span { color: #00ffcc; text-shadow: 0 0 15px rgba(0, 255, 204, 0.4); }
-        nav a { color: #8f8fa3; text-decoration: none; margin-left: 30px; font-size: 0.95rem; font-weight: 500; }
+        .logo span { color: var(--accent-cyan); text-shadow: 0 0 15px rgba(0, 255, 204, 0.4); }
+        nav a { color: var(--text-muted); text-decoration: none; margin-left: 30px; font-size: 0.95rem; font-weight: 500; }
+
+        /* Structural Page Content Cards */
         .content-container { position: relative; z-index: 2; }
-        section { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 0 10%; max-width: 900px; }
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 10%;
+            max-width: 900px;
+        }
+
         h1 { font-size: 4rem; font-weight: 800; line-height: 1.1; margin-bottom: 20px; letter-spacing: -2px; }
-        h1 span { background: linear-gradient(45deg, #00ffcc, #7000ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        p { font-size: 1.25rem; color: #8f8fa3; line-height: 1.6; }
-        #click-prompt { display: none; }
+        h1 span { background: linear-gradient(45deg, var(--accent-cyan), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        p { font-size: 1.25rem; color: var(--text-muted); line-height: 1.6; }
     </style>
 </head>
 <body>
 
-    <div id="click-prompt">V2.0 Core Active</div>
-    <canvas id="three-canvas"></canvas>
+    <!-- Hardware-Independent 2.5D Spatial Architecture Matrix -->
+    <div class="space-matrix-container">
+        <div class="matrix-ring ring-1" id="r1"></div>
+        <div class="matrix-ring ring-2" id="r2"></div>
+        <div class="matrix-ring ring-3" id="r3"></div>
+        <div class="matrix-ring ring-4" id="r4"></div>
+    </div>
 
     <header>
         <div class="logo">VORTEX<span>.LABS</span></div>
@@ -37,80 +120,44 @@
 
     <div class="content-container">
         <section id="home">
-            <h1>We Engineer <span>Live Render</span> Core Matrices.</h1>
-            <p>Scroll down slowly. The 3D matrix cyberpunk cylinder wireframe will track your depth scrolling position instantly across the interface.</p>
+            <h1>We Engineer <span>Spatial Digital</span> Nodes.</h1>
+            <p>Scroll down across our active framework. The nested vector matrices dynamically warp and travel forward inside the camera depth axis natively on your device hardware.</p>
         </section>
+
         <section id="about">
             <h1>High-Scale Automation.</h1>
-            <p>Transforming corporate structures into high-throughput edge nodes running with zero framework latency overhead rules globally.</p>
+            <p>Transforming complex enterprise architectures into streamlined edge instances running with zero latency rules globally.</p>
         </section>
+
         <section id="clients">
-            <h1>Global FinTech Integration.</h1>
-            <p>Deploying advanced predictive computing modules directly into active production clusters securely across modern mobile data networks.</p>
+            <h1>Global Network Integration.</h1>
+            <p>Deploying secure computational infrastructure models directly into live production streams across responsive communication grids.</p>
         </section>
+
         <section id="contact">
-            <h1>Initialize Mainframe Connect.</h1>
-            <p>Ready to deploy your next environment? Reach out to our engineering desk to map your corporate workflows onto our automated matrices.</p>
+            <h1>Initialize Interface Connection.</h1>
+            <p>Ready to deploy your next project array? Reach out to our solutions workspace to map your data workflows onto our systems.</p>
         </section>
     </div>
 
-    <!-- Core CDN Framework Engines -->
-    <script src="https://cloudflare.com"></script>
-    <script src="https://cloudflare.com"></script>
-    <script src="https://cloudflare.com"></script>
-    
+    <!-- Active Device Interaction Script Engine -->
     <script>
-        window.addEventListener('load', () => {
-            gsap.registerPlugin(ScrollTrigger);
+        document.addEventListener('DOMContentLoaded', () => {
+            const r1 = document.getElementById('r1');
+            const r2 = document.getElementById('r2');
+            const r3 = document.getElementById('r3');
+            const r4 = document.getElementById('r4');
 
-            const canvas = document.getElementById('three-canvas');
-            const scene = new THREE.Scene();
-            scene.fog = new THREE.FogExp2(0x030307, 0.015);
+            window.addEventListener('scroll', () => {
+                // Compute standard viewport tracking value
+                const dy = window.scrollY;
 
-            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
-
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-            // Generate the procedural wireframe 3D grid cylinder natively
-            const geometry = new THREE.CylinderGeometry(8, 8, 120, 30, 40, true);
-            const material = new THREE.MeshBasicMaterial({
-                color: 0x00ffcc,
-                wireframe: true,
-                transparent: true,
-                opacity: 0.2
+                // Move coordinates along the mathematical 3D perspective path
+                r1.style.transform = `translateZ(${-200 + (dy * 0.8)}px) rotateX(60deg) rotateZ(${dy * 0.05}deg)`;
+                r2.style.transform = `translateZ(${-400 + (dy * 0.8)}px) rotateX(60deg) rotateZ(${-dy * 0.03}deg)`;
+                r3.style.transform = `translateZ(${-600 + (dy * 0.8)}px) rotateX(60deg) rotateZ(${dy * 0.02}deg)`;
+                r4.style.transform = `translateZ(${-800 + (dy * 0.8)}px) rotateX(60deg) rotateZ(${-dy * 0.01}deg)`;
             });
-            const tunnel = new THREE.Mesh(geometry, material);
-            tunnel.rotation.x = Math.PI / 2;
-            scene.add(tunnel);
-
-            camera.position.z = 0;
-
-            window.addEventListener('resize', () => {
-                camera.aspect = window.innerWidth / window.innerHeight;
-                camera.updateProjectionMatrix();
-                renderer.setSize(window.innerWidth, window.innerHeight);
-            });
-
-            // Anchor scrollbar calculations directly to 3D matrix camera position
-            gsap.to(camera.position, {
-                z: -55,
-                ease: 'none',
-                scrollTrigger: {
-                    trigger: '.content-container',
-                    start: 'top top',
-                    end: 'bottom bottom',
-                    scrub: 0.5
-                }
-            });
-
-            function animate() {
-                requestAnimationFrame(animate);
-                tunnel.rotation.y += 0.002; // Constant background grid twist
-                renderer.render(scene, camera);
-            }
-            animate();
         });
     </script>
 </body>
