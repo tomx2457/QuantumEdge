@@ -68,6 +68,7 @@
     </div>
 
     <!-- Core Interactive Engines -->
+        <!-- Core Interactive Engines -->
     <script src="https://cloudflare.com"></script>
     <script src="https://cloudflare.com"></script>
     <script src="https://cloudflare.com"></script>
@@ -84,14 +85,20 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-            // Create Video Node Stream Link
+            // Defensive Video Configuration
             const video = document.createElement('video');
-            video.src = 'input.mp4';
- // Grabs the video file sitting in the same folder
-            video.load(); video.muted = true; video.playsInline = true;
+            video.src = 'input.mp4'; 
+            video.crossOrigin = 'anonymous';
+            video.preload = 'auto';
+            video.muted = true; 
+            video.playsInline = true;
+            video.load();
 
             // Map Video Texture onto full-frame 3D Plane Mesh
             const videoTexture = new THREE.VideoTexture(video);
+            videoTexture.minFilter = THREE.LinearFilter;
+            videoTexture.magFilter = THREE.LinearFilter;
+            
             const geometry = new THREE.PlaneGeometry(16, 9);
             const material = new THREE.MeshBasicMaterial({ map: videoTexture });
             const videoScreen = new THREE.Mesh(geometry, material);
@@ -104,14 +111,15 @@
                 camera.updateProjectionMatrix();
                 renderer.setSize(window.innerWidth, window.innerHeight);
                 if (window.innerWidth < window.innerHeight) {
-                    videoScreen.scale.set(1.9, 1.9, 1); // Mobile Portrait Fit
+                    videoScreen.scale.set(1.9, 1.9, 1);
                 } else {
-                    videoScreen.scale.set(1.05, 1.05, 1); // Desktop Landscape Fit
+                    videoScreen.scale.set(1.05, 1.05, 1);
                 }
             }
-            window.addEventListener('resize', handleResize); handleResize();
+            window.addEventListener('resize', handleResize); 
+            handleResize();
 
-            // Connect Scroll Progress to Video Playhead Timeline
+            // Explicit Timeline Binder Function
             function initScrollScrub() {
                 gsap.to(video, {
                     currentTime: video.duration || 5,
@@ -120,17 +128,20 @@
                         trigger: '.content-container',
                         start: 'top top',
                         end: 'bottom bottom',
-                        scrub: 0.5,
+                        scrub: 0.3,
+                        invalidateOnRefresh: true
                     }
                 });
             }
 
-            // Unlocks browser security playback limits upon first user click interaction
+            // Click Gate: Unlocks modern browser security streaming rules instantly
             window.addEventListener('click', () => {
                 video.play().then(() => {
                     video.pause();
                     initScrollScrub();
                     document.getElementById('click-prompt').style.display = 'none';
+                    // Render an initial frame immediately so it doesn't look black
+                    renderer.render(scene, camera);
                 });
             }, { once: true });
 
@@ -143,3 +154,5 @@
     </script>
 </body>
 </html>
+
+   
