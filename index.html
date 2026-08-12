@@ -3,40 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexus Software Labs | Enterprise Infrastructure</title>
+    <title>Quantum Edge Architecture | Live Render v2.0</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { background-color: #030307; color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, sans-serif; overflow-x: hidden; }
-        
-        /* Fixed canvas anchors the 3D scroll video flawlessly to the background */
         #three-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; }
-        
-        /* Premium Navigation Bar */
         header { position: fixed; top: 0; left: 0; width: 100%; padding: 25px 8%; display: flex; justify-content: space-between; align-items: center; background: rgba(3, 3, 7, 0.7); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); z-index: 100; }
         .logo { font-size: 1.5rem; font-weight: 800; letter-spacing: -1px; }
         .logo span { color: #00ffcc; text-shadow: 0 0 15px rgba(0, 255, 204, 0.4); }
-        nav a { color: #8f8fa3; text-decoration: none; margin-left: 30px; font-size: 0.95rem; font-weight: 500; transition: color 0.3s; }
-        nav a:hover { color: #00ffcc; }
-
-        /* Full page scrollytelling container layers */
+        nav a { color: #8f8fa3; text-decoration: none; margin-left: 30px; font-size: 0.95rem; font-weight: 500; }
         .content-container { position: relative; z-index: 2; }
         section { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 0 10%; max-width: 900px; }
         h1 { font-size: 4rem; font-weight: 800; line-height: 1.1; margin-bottom: 20px; letter-spacing: -2px; }
         h1 span { background: linear-gradient(45deg, #00ffcc, #7000ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         p { font-size: 1.25rem; color: #8f8fa3; line-height: 1.6; }
-        
-        /* Prompt Overlay to unlock video audio/frame streaming rules */
-        #click-prompt { position: fixed; bottom: 30px; right: 30px; background: rgba(0, 255, 204, 0.1); border: 1px solid #00ffcc; padding: 12px 24px; border-radius: 4px; z-index: 999; font-size: 0.9rem; letter-spacing: 1px; }
+        #click-prompt { display: none; }
     </style>
 </head>
 <body>
 
-    <div id="click-prompt">CLICK ANYWHERE TO INITIALIZE 3D VIDEO</div>
+    <div id="click-prompt">V2.0 Core Active</div>
     <canvas id="three-canvas"></canvas>
 
     <header>
-        <!-- Custom Brand Name (Change Nexus here if you want) -->
-        <div class="logo">NEXUS<span>.LABS</span></div>
+        <div class="logo">VORTEX<span>.LABS</span></div>
         <nav>
             <a href="#home">Home</a>
             <a href="#about">About Us</a>
@@ -47,28 +37,24 @@
 
     <div class="content-container">
         <section id="home">
-            <h1>We Engineer <span>Cinematic</span> Infrastructure.</h1>
-            <p>Click anywhere on the screen first, then scroll down slowly. Your 27MB optimized video track will render and scrub frame-by-frame natively beneath the layout information cards.</p>
+            <h1>We Engineer <span>Live Render</span> Core Matrices.</h1>
+            <p>Scroll down slowly. The 3D matrix cyberpunk cylinder wireframe will track your depth scrolling position instantly across the interface.</p>
         </section>
-
         <section id="about">
-            <h1>High-Scale Cloud Automation.</h1>
-            <p>Our engineers transform traditional, legacy corporate frameworks into hyper-scale edge architectures engineered for zero latency and absolute network uptime metrics.</p>
+            <h1>High-Scale Automation.</h1>
+            <p>Transforming corporate structures into high-throughput edge nodes running with zero framework latency overhead rules globally.</p>
         </section>
-
         <section id="clients">
-            <h1>Trusted Globally across FinTech.</h1>
-            <p>From advanced digital microservices to high-fidelity analytical machine pipelines, we compile responsive application layers built to execute flawlessly on all mobile networks.</p>
+            <h1>Global FinTech Integration.</h1>
+            <p>Deploying advanced predictive computing modules directly into active production clusters securely across modern mobile data networks.</p>
         </section>
-
         <section id="contact">
-            <h1>Initialize Mainframe Connection.</h1>
-            <p>Ready to deploy your next node module? Reach out to our systems desk to map your corporate computing workflows directly onto our automated matrices.</p>
+            <h1>Initialize Mainframe Connect.</h1>
+            <p>Ready to deploy your next environment? Reach out to our engineering desk to map your corporate workflows onto our automated matrices.</p>
         </section>
     </div>
 
-    <!-- Core Interactive Engines -->
-           <!-- Core 3D Graphics Engines (Loaded securely via CDN) -->
+    <!-- Core CDN Framework Engines -->
     <script src="https://cloudflare.com"></script>
     <script src="https://cloudflare.com"></script>
     <script src="https://cloudflare.com"></script>
@@ -79,8 +65,6 @@
 
             const canvas = document.getElementById('three-canvas');
             const scene = new THREE.Scene();
-            
-            // Adds deep spatial fog to simulate depth perspective inside the vector grid
             scene.fog = new THREE.FogExp2(0x030307, 0.015);
 
             const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -89,51 +73,41 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-            // Generate an infinite 3D Cylinder Matrix Grid completely using pure code geometry
+            // Generate the procedural wireframe 3D grid cylinder natively
             const geometry = new THREE.CylinderGeometry(8, 8, 120, 30, 40, true);
             const material = new THREE.MeshBasicMaterial({
-                color: 0x00ffcc, // Cyberpunk neon cyan grid lines
+                color: 0x00ffcc,
                 wireframe: true,
                 transparent: true,
-                opacity: 0.18
+                opacity: 0.2
             });
             const tunnel = new THREE.Mesh(geometry, material);
-            
-            // Pivot the grid horizontally so it points directly into the viewer's screen depth
             tunnel.rotation.x = Math.PI / 2;
             scene.add(tunnel);
 
             camera.position.z = 0;
 
-            // Handle browser layout size changes instantly without warping graphics or text blocks
             window.addEventListener('resize', () => {
                 camera.aspect = window.innerWidth / window.innerHeight;
                 camera.updateProjectionMatrix();
                 renderer.setSize(window.innerWidth, window.innerHeight);
             });
 
-            // Map page scroll progression straight onto 3D camera depth movements
+            // Anchor scrollbar calculations directly to 3D matrix camera position
             gsap.to(camera.position, {
-                z: -55, // Propels the camera deep inside the matrix vector tunnel as you scroll down
+                z: -55,
                 ease: 'none',
                 scrollTrigger: {
                     trigger: '.content-container',
                     start: 'top top',
                     end: 'bottom bottom',
-                    scrub: 0.5, // Buttery interactive easing inertia effect
+                    scrub: 0.5
                 }
             });
 
-            // Auto-hides the interaction cue bar completely on page load execution
-            document.getElementById('click-prompt').style.display = 'none';
-
-            // Active Real-Time Render Calculation Loop
             function animate() {
                 requestAnimationFrame(animate);
-                
-                // Creates a constant subtle rotational spin for high-end cinematic vector movement
-                tunnel.rotation.y += 0.002; 
-                
+                tunnel.rotation.y += 0.002; // Constant background grid twist
                 renderer.render(scene, camera);
             }
             animate();
@@ -141,4 +115,3 @@
     </script>
 </body>
 </html>
-
