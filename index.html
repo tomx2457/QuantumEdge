@@ -68,7 +68,7 @@
     </div>
 
     <!-- Core Interactive Engines -->
-        <!-- Core Interactive Engines -->
+           <!-- Core 3D Graphics Engines (Loaded securely via CDN) -->
     <script src="https://cloudflare.com"></script>
     <script src="https://cloudflare.com"></script>
     <script src="https://cloudflare.com"></script>
@@ -79,74 +79,61 @@
 
             const canvas = document.getElementById('three-canvas');
             const scene = new THREE.Scene();
+            
+            // Adds deep spatial fog to simulate depth perspective inside the vector grid
+            scene.fog = new THREE.FogExp2(0x030307, 0.015);
+
             const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
             const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
 
             renderer.setSize(window.innerWidth, window.innerHeight);
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-            // Defensive Video Configuration
-            const video = document.createElement('video');
-            video.src = 'input.mp4'; 
-            video.crossOrigin = 'anonymous';
-            video.preload = 'auto';
-            video.muted = true; 
-            video.playsInline = true;
-            video.load();
-
-            // Map Video Texture onto full-frame 3D Plane Mesh
-            const videoTexture = new THREE.VideoTexture(video);
-            videoTexture.minFilter = THREE.LinearFilter;
-            videoTexture.magFilter = THREE.LinearFilter;
+            // Generate an infinite 3D Cylinder Matrix Grid completely using pure code geometry
+            const geometry = new THREE.CylinderGeometry(8, 8, 120, 30, 40, true);
+            const material = new THREE.MeshBasicMaterial({
+                color: 0x00ffcc, // Cyberpunk neon cyan grid lines
+                wireframe: true,
+                transparent: true,
+                opacity: 0.18
+            });
+            const tunnel = new THREE.Mesh(geometry, material);
             
-            const geometry = new THREE.PlaneGeometry(16, 9);
-            const material = new THREE.MeshBasicMaterial({ map: videoTexture });
-            const videoScreen = new THREE.Mesh(geometry, material);
-            scene.add(videoScreen);
+            // Pivot the grid horizontally so it points directly into the viewer's screen depth
+            tunnel.rotation.x = Math.PI / 2;
+            scene.add(tunnel);
 
-            camera.position.z = 6.2;
+            camera.position.z = 0;
 
-            function handleResize() {
+            // Handle browser layout size changes instantly without warping graphics or text blocks
+            window.addEventListener('resize', () => {
                 camera.aspect = window.innerWidth / window.innerHeight;
                 camera.updateProjectionMatrix();
                 renderer.setSize(window.innerWidth, window.innerHeight);
-                if (window.innerWidth < window.innerHeight) {
-                    videoScreen.scale.set(1.9, 1.9, 1);
-                } else {
-                    videoScreen.scale.set(1.05, 1.05, 1);
+            });
+
+            // Map page scroll progression straight onto 3D camera depth movements
+            gsap.to(camera.position, {
+                z: -55, // Propels the camera deep inside the matrix vector tunnel as you scroll down
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: '.content-container',
+                    start: 'top top',
+                    end: 'bottom bottom',
+                    scrub: 0.5, // Buttery interactive easing inertia effect
                 }
-            }
-            window.addEventListener('resize', handleResize); 
-            handleResize();
+            });
 
-            // Explicit Timeline Binder Function
-            function initScrollScrub() {
-                gsap.to(video, {
-                    currentTime: video.duration || 5,
-                    ease: 'none',
-                    scrollTrigger: {
-                        trigger: '.content-container',
-                        start: 'top top',
-                        end: 'bottom bottom',
-                        scrub: 0.3,
-                        invalidateOnRefresh: true
-                    }
-                });
-            }
+            // Auto-hides the interaction cue bar completely on page load execution
+            document.getElementById('click-prompt').style.display = 'none';
 
-            // Click Gate: Unlocks modern browser security streaming rules instantly
-            window.addEventListener('click', () => {
-                video.play().then(() => {
-                    video.pause();
-                    initScrollScrub();
-                    document.getElementById('click-prompt').style.display = 'none';
-                    // Render an initial frame immediately so it doesn't look black
-                    renderer.render(scene, camera);
-                });
-            }, { once: true });
-
+            // Active Real-Time Render Calculation Loop
             function animate() {
                 requestAnimationFrame(animate);
+                
+                // Creates a constant subtle rotational spin for high-end cinematic vector movement
+                tunnel.rotation.y += 0.002; 
+                
                 renderer.render(scene, camera);
             }
             animate();
@@ -155,4 +142,3 @@
 </body>
 </html>
 
-   
