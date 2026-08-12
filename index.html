@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Software Labs | Enterprise Infrastructure</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background-color: #030307; color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, sans-serif; overflow-x: hidden; }
+        
+        /* Fixed canvas anchors the 3D scroll video flawlessly to the background */
+        #three-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; pointer-events: none; }
+        
+        /* Premium Navigation Bar */
+        header { position: fixed; top: 0; left: 0; width: 100%; padding: 25px 8%; display: flex; justify-content: space-between; align-items: center; background: rgba(3, 3, 7, 0.7); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); z-index: 100; }
+        .logo { font-size: 1.5rem; font-weight: 800; letter-spacing: -1px; }
+        .logo span { color: #00ffcc; text-shadow: 0 0 15px rgba(0, 255, 204, 0.4); }
+        nav a { color: #8f8fa3; text-decoration: none; margin-left: 30px; font-size: 0.95rem; font-weight: 500; transition: color 0.3s; }
+        nav a:hover { color: #00ffcc; }
+
+        /* Full page scrollytelling container layers */
+        .content-container { position: relative; z-index: 2; }
+        section { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 0 10%; max-width: 900px; }
+        h1 { font-size: 4rem; font-weight: 800; line-height: 1.1; margin-bottom: 20px; letter-spacing: -2px; }
+        h1 span { background: linear-gradient(45deg, #00ffcc, #7000ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        p { font-size: 1.25rem; color: #8f8fa3; line-height: 1.6; }
+        
+        /* Prompt Overlay to unlock video audio/frame streaming rules */
+        #click-prompt { position: fixed; bottom: 30px; right: 30px; background: rgba(0, 255, 204, 0.1); border: 1px solid #00ffcc; padding: 12px 24px; border-radius: 4px; z-index: 999; font-size: 0.9rem; letter-spacing: 1px; }
+    </style>
+</head>
+<body>
+
+    <div id="click-prompt">CLICK ANYWHERE TO INITIALIZE 3D VIDEO</div>
+    <canvas id="three-canvas"></canvas>
+
+    <header>
+        <!-- Custom Brand Name (Change Nexus here if you want) -->
+        <div class="logo">NEXUS<span>.LABS</span></div>
+        <nav>
+            <a href="#home">Home</a>
+            <a href="#about">About Us</a>
+            <a href="#clients">Clients</a>
+            <a href="#contact">Contact Us</a>
+        </nav>
+    </header>
+
+    <div class="content-container">
+        <section id="home">
+            <h1>We Engineer <span>Cinematic</span> Infrastructure.</h1>
+            <p>Click anywhere on the screen first, then scroll down slowly. Your 27MB optimized video track will render and scrub frame-by-frame natively beneath the layout information cards.</p>
+        </section>
+
+        <section id="about">
+            <h1>High-Scale Cloud Automation.</h1>
+            <p>Our engineers transform traditional, legacy corporate frameworks into hyper-scale edge architectures engineered for zero latency and absolute network uptime metrics.</p>
+        </section>
+
+        <section id="clients">
+            <h1>Trusted Globally across FinTech.</h1>
+            <p>From advanced digital microservices to high-fidelity analytical machine pipelines, we compile responsive application layers built to execute flawlessly on all mobile networks.</p>
+        </section>
+
+        <section id="contact">
+            <h1>Initialize Mainframe Connection.</h1>
+            <p>Ready to deploy your next node module? Reach out to our systems desk to map your corporate computing workflows directly onto our automated matrices.</p>
+        </section>
+    </div>
+
+    <!-- Core Interactive Engines -->
+    <script src="https://cloudflare.com"></script>
+    <script src="https://cloudflare.com"></script>
+    <script src="https://cloudflare.com"></script>
+    
+    <script>
+        window.addEventListener('load', () => {
+            gsap.registerPlugin(ScrollTrigger);
+
+            const canvas = document.getElementById('three-canvas');
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
+
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+            // Create Video Node Stream Link
+            const video = document.createElement('video');
+            video.src = 'optimized_movie.mp4'; // Grabs the video file sitting in the same folder
+            video.load(); video.muted = true; video.playsInline = true;
+
+            // Map Video Texture onto full-frame 3D Plane Mesh
+            const videoTexture = new THREE.VideoTexture(video);
+            const geometry = new THREE.PlaneGeometry(16, 9);
+            const material = new THREE.MeshBasicMaterial({ map: videoTexture });
+            const videoScreen = new THREE.Mesh(geometry, material);
+            scene.add(videoScreen);
+
+            camera.position.z = 6.2;
+
+            function handleResize() {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                if (window.innerWidth < window.innerHeight) {
+                    videoScreen.scale.set(1.9, 1.9, 1); // Mobile Portrait Fit
+                } else {
+                    videoScreen.scale.set(1.05, 1.05, 1); // Desktop Landscape Fit
+                }
+            }
+            window.addEventListener('resize', handleResize); handleResize();
+
+            // Connect Scroll Progress to Video Playhead Timeline
+            function initScrollScrub() {
+                gsap.to(video, {
+                    currentTime: video.duration || 5,
+                    ease: 'none',
+                    scrollTrigger: {
+                        trigger: '.content-container',
+                        start: 'top top',
+                        end: 'bottom bottom',
+                        scrub: 0.5,
+                    }
+                });
+            }
+
+            // Unlocks browser security playback limits upon first user click interaction
+            window.addEventListener('click', () => {
+                video.play().then(() => {
+                    video.pause();
+                    initScrollScrub();
+                    document.getElementById('click-prompt').style.display = 'none';
+                });
+            }, { once: true });
+
+            function animate() {
+                requestAnimationFrame(animate);
+                renderer.render(scene, camera);
+            }
+            animate();
+        });
+    </script>
+</body>
+</html>
